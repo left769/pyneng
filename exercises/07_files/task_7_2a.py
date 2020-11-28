@@ -12,4 +12,18 @@
 
 """
 
+from sys import argv
+
 ignore = ["duplex", "alias", "Current configuration"]
+
+config = argv[1]
+
+with open(config) as src:
+    for line in src:
+        for stimulant in ignore:
+            counter = line.count('!') + line.count(stimulant)
+            if counter != 0:
+                break
+        else:
+            print(line.rstrip())
+

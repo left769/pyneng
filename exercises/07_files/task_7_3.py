@@ -17,3 +17,12 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+
+with open('CAM_table.txt') as src:
+    for line in src:
+        counter = line.count('.')
+        if counter > 0:
+            values = line.split()
+            template = "{:<4}  {:>15}  {:>6}"
+            print(template.format(values[0], values[1], values[3]))
+

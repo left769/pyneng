@@ -15,5 +15,24 @@
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
+from sys import argv
 
 ignore = ["duplex", "alias", "Current configuration"]
+
+config = argv[1]
+
+dst_file = argv[2]
+
+with open(config) as src:
+    for line in src:
+        for stimulant in ignore:
+            counter = line.count(stimulant)
+            if counter != 0:
+                break
+        else:
+            dst = open(dst_file, 'a+')
+            dst.write(line)
+
+dst.close()
+
+

@@ -19,6 +19,9 @@ $ python task_5_1a.py
 То есть эту задачу можно решить без использования условия if.
 """
 
+device = input('Enter device name: ')
+parametr = input('Enter parametr: ')
+
 london_co = {
     "r1": {
         "location": "21 New Globe Walk",
@@ -44,3 +47,6 @@ london_co = {
         "routing": True,
     },
 }
+
+print('\n' + '#' * 40 + '\n')
+print(london_co[device][parametr])

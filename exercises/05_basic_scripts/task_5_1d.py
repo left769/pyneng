@@ -18,6 +18,9 @@ $ python task_5_1d.py
 То есть эту задачу можно решить без использования условия if.
 """
 
+device = input('Enter device name: ').lower()
+
+
 london_co = {
     "r1": {
         "location": "21 New Globe Walk",
@@ -43,3 +46,9 @@ london_co = {
         "routing": True,
     },
 }
+
+parametr = input('Enter parametr (' + (', '.join(sorted(london_co[device]))) + '): ').lower()
+
+
+print('\n' + '#' * 40 + '\n')
+print(london_co[device].get(parametr, 'This is not a valid parameter!'))
