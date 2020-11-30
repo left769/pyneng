@@ -66,7 +66,7 @@ def generate_access_config(intf_vlan_mapping, access_template, *psecurity):
     Возвращает список всех портов в режиме access с конфигурацией на основе шаблона
     """
     for port, vlan in intf_vlan_mapping.items():
-        result.append(port)
+        result.append(f'interface {port}')
         f(access_template, vlan)
         if psecurity:
             f(port_security_template)
