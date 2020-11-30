@@ -44,15 +44,6 @@ access_config = {"FastEthernet0/12": 10, "FastEthernet0/14": 11, "FastEthernet0/
 
 
 
-result = []
-
-def f(value, *vid):
-    for line in value:
-        if line.endswith('vlan'):
-            line2 = '{} {}'.format(line, (''.join(map(str, vid))))
-            result.append(line2)
-        else:
-            result.append(line)
 
 
 def generate_access_config(intf_vlan_mapping, access_template, *psecurity):
