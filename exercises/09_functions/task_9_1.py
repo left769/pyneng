@@ -73,7 +73,7 @@ def generate_access_config(intf_vlan_mapping, access_template):
     result = []
     for port, vid in intf_vlan_mapping.items():
         result.append(f'interface {port}')
-        for line in access_mode_template:
+        for line in access_template:
             if line.endswith('vlan'):
                 result.append(f'{line} {vid}')
             else:
