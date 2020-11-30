@@ -59,16 +59,6 @@ access_config_2 = {
     "FastEthernet0/09": 107,
 }
 
-result = []
-
-def f(value, vid):
-    for line in value:
-        if line.endswith('vlan'):
-            line2 = '{} {}'.format(line, vid)
-            result.append(line2)
-        else:
-            result.append(line)
-
 
 def generate_access_config(intf_vlan_mapping, access_template):
     """
@@ -80,12 +70,13 @@ def generate_access_config(intf_vlan_mapping, access_template):
 
     Возвращает список всех портов в режиме access с конфигурацией на основе шаблона
     """
-    for port, vlan in intf_vlan_mapping.items():
+    result = []
+    for port, vid in intf_vlan_mapping.items():
         result.append(f'interface {port}')
-        f(access_mode_template, vlan)
+        for line in access_mode_template:
+            if line.endswith('vlan'):
+                result.append(f'{line} {vid}')
+            else:
+                result.append(line)
     return result
-
-test = generate_access_config(access_config, access_mode_template)
-print(test)
-
 
