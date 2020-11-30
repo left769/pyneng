@@ -64,9 +64,9 @@ def generate_access_config(intf_vlan_mapping, access_template, psecurity=None):
                 result.append(f'{line} {vid}')
             else:
                 result.append(line)
-    if psecurity:
-        for line in port_security_template:
-            result.append(line)
+        if psecurity:
+            for test in port_security_template:
+                result.append(test)
     return result
 
 
