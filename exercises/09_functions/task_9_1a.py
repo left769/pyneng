@@ -42,11 +42,11 @@ port_security_template = [
 
 access_config = {"FastEthernet0/12": 10, "FastEthernet0/14": 11, "FastEthernet0/16": 17}
 
-psecurity = 'psecurity'
 
 
 
-def generate_access_config(intf_vlan_mapping, access_template, *triger):
+
+def generate_access_config(intf_vlan_mapping, access_template, psecurity=None):
     """
     intf_vlan_mapping - словарь с соответствием интерфейс-VLAN такого вида:
         {'FastEthernet0/12':10,
@@ -64,9 +64,10 @@ def generate_access_config(intf_vlan_mapping, access_template, *triger):
                 result.append(f'{line} {vid}')
             else:
                 result.append(line)
-    if triger == 'psecurity':
+    if psecurity:
         for line in port_security_template:
             result.append(line)
     return result
 
 
+print(generate_access_config(access_config, access_mode_template, port_security_template))
