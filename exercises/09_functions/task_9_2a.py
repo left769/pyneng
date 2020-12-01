@@ -30,8 +30,8 @@ trunk_config = {
 
 def generate_trunk_config(intf_vlan_mapping, trunk_template):
     result = dict()
-    test = []
     for port, vid in intf_vlan_mapping.items():
+        test = []
         for line in trunk_template:
             if line.endswith('vlan'):
                 test.append('{} {}'.format(line, ','.join(map(str, vid))))
@@ -40,4 +40,3 @@ def generate_trunk_config(intf_vlan_mapping, trunk_template):
                 test.append(line)
         result.update({f'{port}': test})
     return result
-
