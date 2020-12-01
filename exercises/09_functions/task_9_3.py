@@ -21,3 +21,28 @@
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
+
+
+
+def get_int_vlan_map(config_filename):
+    access_ports = {}
+    trunk_ports = {}
+    with open(config_filename) as f:
+        for line in f:
+            if 'Ethernet' in line:
+                interface = line.split()[1]
+            elif 'access vlan' in line:
+                vid = line.split()[-1]
+                access_ports[interface] = {}
+                access_ports[interface] = int(vid)
+    with open(config_filename) as f:
+        for line in f:
+            if 'Ethernet' in line:
+                interface = line.split()[1]
+            elif 'trunk allowed vlan' in line:
+                vid = (line.split()[-1]).split(sep=',')
+                test = [int(item) for item in vid if item.isdigit()]
+                trunk_ports[interface] = {}
+                trunk_ports[interface] = test
+    result = (access_ports,trunk_ports)
+    return result
