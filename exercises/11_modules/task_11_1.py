@@ -38,8 +38,16 @@ def parse_cdp_neighbors(command_output):
     работать и с файлами и с выводом с оборудования.
     Плюс учимся работать с таким выводом.
     """
+    result = []
+    result = result.append(command_output)
+    return result
+
+
+
+
 
 
 if __name__ == "__main__":
     with open("sh_cdp_n_sw1.txt") as f:
         print(parse_cdp_neighbors(f.read()))
+
