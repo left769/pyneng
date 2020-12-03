@@ -47,9 +47,7 @@ def parse_cdp_neighbors(command_output):
         elif len(line) >= 5 and line[3].isdigit():
             rem_dev, loc_intf_type, loc_intf_num, *rest, rem_intf_type, rem_intf_num = line
             result_dict[(local_device, loc_intf_type + loc_intf_num)] = (rem_dev, rem_intf_type + rem_intf_num)
-
     return result_dict
-
 
 
 if __name__ == "__main__":
