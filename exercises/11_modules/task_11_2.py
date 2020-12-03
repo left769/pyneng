@@ -50,11 +50,23 @@ from draw_network_graph import draw_topology
 # рисоваться топология (после вызова функции)
 def create_network_map(filenames):
     links = {}
+    d = {}
     for file in filenames:
         with open(file) as f:
 
             links.update(parse_cdp_neighbors(f.read()))
-    return links
+
+
+    for keys in links.keys():
+        for values in links.values():
+            if keys != values:
+                d[keys] = values
+    #d = {k: v for k, v in links.items() if k != v}
+
+
+
+
+    return d
 
 
 
