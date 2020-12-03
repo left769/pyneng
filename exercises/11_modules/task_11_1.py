@@ -38,40 +38,17 @@ def parse_cdp_neighbors(command_output):
     работать и с файлами и с выводом с оборудования.
     Плюс учимся работать с таким выводом.
     """
-    result = (command_output.split(sep='\n'))
-    test = []
     result_dict = {}
-    """
-    for i in result:
+    for i in command_output.split('\n'):
         i = i.strip()
+        line = i.split()
         if '>' in i:
-            local_device = i[0:i.index('>')]
-        i = i.strip().split()
-        test.append(i)
-    test = test[6:-1]
-    """
-    for line in result:
-        line = line.strip()
-        if line != '':
-            test.append(line)
-        if '>' in line:
-            local_device = line[0:line.index('>')]
+            local_device = i.split('>')[0]
+        elif len(line) >= 5 and line[3].isdigit():
+            rem_dev, loc_intf_type, loc_intf_num, *rest, rem_intf_type, rem_intf_num = line
+            result_dict[(local_device, loc_intf_type + loc_intf_num)] = (rem_dev, rem_intf_type + rem_intf_num)
 
-    test = test[4:]
-
-    for i in test:
-        i = i.split()
-        k = type(i)
-        rem_dev, loc_intf_type, loc_intf_num, *rest, rem_intf_type, rem_intf_num = i
-        src_port = f'{loc_intf_type}{loc_intf_num}'
-        dst_port = f'{rem_intf_type}{rem_intf_num}'
-        src = (local_device, src_port,)
-        dst = (rem_dev, dst_port,)
-        result_dict[src] = dst
     return result_dict
-
-
-
 
 
 
