@@ -16,14 +16,14 @@
 """
 import subprocess
 
-addresses = ['1.1.1.1', '192.168.1.1', '8.8.8.8', '5.5.5.5', '127.0.0.1']
+addresses = ['1.1.a', '1.1.1.1', '192.168.1.1', '8.8.8.8', '5.5.5.5', '127.0.0.1']
 
 
 def ping_ip_addresses(addr_list):
     available = []
     not_available = []
     for ip in addr_list:
-        result = subprocess.run('ping {}'.format(ip))
+        result = subprocess.run('ping {}'.format(ip), stderr=subprocess.PIPE, encoding='utf-8')
         if result.returncode == 0:
             available.append(ip)
         else:
