@@ -14,27 +14,31 @@
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
-import subprocess
+
 
 ips = ["1.1.1", "8.8.8.8", "8.8.4.4", "8.8.7.1"]
 
 
 def ping_ip_addresses(addr_list):
+    import subprocess
     available = []
     not_available = []
     for ip in addr_list:
-        result = subprocess.run('ping {}'.format(ip), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if result.returncode == 0:
-            available.append(ip)
-        else:
-            not_available.append(ip)
-    test = (available, not_available,)
-    return test
+        try:
+            out = subprocess.run(f'ping {ip}')
+            if out.returncode == 0:
+                available.append(ip)
+            else:
+                not_available.append(ip)
+        except:
+            pass
+    result = (available, not_available,)
+    return result
 
 
 
 
 
-#if __name__ == "__main__":
-#    print(ping_ip_addresses(ips))
+if __name__ == "__main__":
+    print(ping_ip_addresses(ips))
 
