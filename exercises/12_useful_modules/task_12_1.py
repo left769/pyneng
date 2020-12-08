@@ -24,14 +24,11 @@ def ping_ip_addresses(addr_list):
     available = []
     not_available = []
     for ip in addr_list:
-        try:
-            out = subprocess.run(f'ping {ip}')
-            if out.returncode == 0:
-                available.append(ip)
-            else:
-                not_available.append(ip)
-        except:
-            pass
+        out = subprocess.run(['ping', ip, '-c', '2'])
+        if out.returncode == 0:
+            available.append(ip)
+        else:
+            not_available.append(ip)
     result = (available, not_available,)
     return result
 
