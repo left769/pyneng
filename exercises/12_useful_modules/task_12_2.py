@@ -39,15 +39,15 @@ def convert_ranges_to_ip_list(src):
             result.append(i)
         else:
             i = i.split(sep='-')
-            first = i[0]
-            result.append(first)
-            last_octet = (i[-1].split(sep='.'))[-1]
-            last_octet = int(last_octet)
-            start = first.split(sep='.')
-            while int(start[-1]) < last_octet:
-                start[-1] = str(int(start[-1]) + 1)
-                test = '.'.join(start)
-                result.append(test)
+            start_ip = i[0]
+            result.append(start_ip)
+            end_ip_last_octet = (i[-1].split(sep='.'))[-1]
+            end_ip_last_octet = int(end_ip_last_octet)
+            ip = start_ip.split(sep='.')
+            while int(ip[-1]) < end_ip_last_octet:
+                ip[-1] = str(int(ip[-1]) + 1)
+                append_ip = '.'.join(ip)
+                result.append(append_ip)
     return result
 
 
