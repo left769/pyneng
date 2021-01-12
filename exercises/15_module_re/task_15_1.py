@@ -29,7 +29,7 @@ def get_ip_from_cfg(filename):
     result = []
     with open(filename) as f:
         for line in f:
-            match = re.search(r'(\d+.\d+.\d+.\d+) (\d+.\d+.\d+.\d)', line)
+            match = re.search(r'ip address (\d+.\d+.\d+.\d+) (\d+.\d+.\d+.\d)', line)
             if match:
                 test = tuple(match.groups())
                 result.append(test)
