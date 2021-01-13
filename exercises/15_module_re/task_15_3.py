@@ -37,9 +37,8 @@ import re
 def convert_ios_nat_to_asa(src_file, dst_file):
     regex = (r'ip nat inside source static tcp (?P<ip>\S+) (?P<s_port>\d+) interface \S+ (?P<d_port>\d+)')
     template = 'object network LOCAL_{0}\n host {0}\n nat (inside,outside) static interface service tcp {1} {2}\n'
-    with open(src_file) as f:
-        dst = open(dst_file, 'w')
-        for line in f:
+    with open(src_file) as src, open(dst_file, 'w') as dst:
+        for line in src:
             match = re.search(regex, line)
             if match:
                 ip = match.group('ip')
