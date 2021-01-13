@@ -26,12 +26,16 @@ import re
 
 def parse_sh_ip_int_br(filename):
     result = []
-    regex = (r'(?P<interf>\S+) +(?P<ip>\S+) +YES +.+ +(?P<stat>\S+) +(?P<prot>\S+)')
+    regex = (r'(?P<interf>\S+) +(?P<ip>\S+) +YES +\S+ +(?P<stat>.+) +(?P<prot>\S+)')
     with open(filename) as f:
         for line in f:
             match = re.search(regex, line)
             if match:
-                result.append(match.groups())
+                interface = match.group('interf')
+                ip_addr = match.group('ip')
+                status = (match.group('stat')).strip()
+                protocol = match.group('prot')
+                result.append((interface, ip_addr, status, protocol,))
     return result
 
 
