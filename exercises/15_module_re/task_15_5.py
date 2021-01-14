@@ -33,10 +33,9 @@ def generate_description_from_cdp(src_file):
     result = {}
     regex = (r'(\S+) +(\S+ \S+) +\d+ .+ +\S+ +(\S+ .+)\n')
     with open(src_file) as f:
-        for line in f:
-            match = re.search(regex, line)
-            if match:
-                result[match.group(2)] = (f'description Connected to {match.group(1)} port {match.group(3)}')
+        match_list = re.finditer(regex, f.read())
+        for match in match_list:
+            result[match.group(2)] = (f'description Connected to {match.group(1)} port {match.group(3)}')
     return result
 
 
