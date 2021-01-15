@@ -44,7 +44,7 @@ def write_dhcp_snooping_to_csv(filenames, output):
                 result.append(dev_name)
     with open(output, 'w') as out:
         writer = csv.writer(out)
-        writer.writerow(['switch','mac','ip','vlan','interface'])
+        writer.writerow(['switch', 'mac', 'ip', 'vlan', 'interface'])
         for row in result:
             writer.writerow(row)
 
