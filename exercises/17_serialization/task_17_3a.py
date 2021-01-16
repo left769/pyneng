@@ -35,6 +35,7 @@
 import re
 import glob
 import yaml
+from pprint import pprint
 
 
 def generate_topology_from_cdp(list_of_files, save_to_filename=None):
@@ -48,11 +49,11 @@ def generate_topology_from_cdp(list_of_files, save_to_filename=None):
             for match in match_neigh:
                 neighbors[match.group('local_int')] = {match.group('rem_dev'): (match.group('port_id'))}
             result[match_dev.group(1)] = neighbors
-    if type(save_to_filename) == str:
+    if save_to_filename:
         with open(save_to_filename, 'w') as f:
-            yaml.dump(result, f)
+            yaml.dump(result, f, default_flow_style=False)
     return result
 
 
 if __name__ == '__main__':
-    print(generate_topology_from_cdp(glob.glob('sh_cdp_n*'), 'topology.yaml'))
+    pprint(generate_topology_from_cdp(glob.glob('sh_cdp_n*'), 'topology.yaml'))
