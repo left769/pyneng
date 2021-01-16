@@ -24,3 +24,23 @@ R6           Fa 0/2          143           R S I           2811       Fa 0/0
 
 Проверить работу функции на содержимом файла sh_cdp_n_sw1.txt
 """
+import re
+import glob
+
+
+def parse_sh_cdp_neighbors(sh_cdp_n):
+    result = {}
+    neighbors = {}
+    match_dev = re.search(r'(?P<dev_name>\S+)>sh\w+ c\w+ n\w+\n', sh_cdp_n)
+    match_neigh = re.finditer(r'(?P<rem_dev>\S+) +(?P<local_int>\S+ \S+) +\d+ +.+ +(?P<port_id>\S+ \S+)\n', sh_cdp_n)
+    for match in match_neigh:
+        neighbors[match.group('local_int')] = {match.group('rem_dev'): (match.group('port_id'))}
+    result[match_dev.group(1)] = neighbors
+    return result
+
+
+if __name__ == '__main__':
+    files = glob.glob('sh_cdp_n*')
+    for file in files:
+        with open(file) as f:
+            print(parse_sh_cdp_neighbors(f.read()))
