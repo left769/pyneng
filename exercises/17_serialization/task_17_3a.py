@@ -37,7 +37,7 @@ import glob
 import yaml
 
 
-def generate_topology_from_cdp(list_of_files, *args):
+def generate_topology_from_cdp(list_of_files, save_to_filename=None):
     result = {}
     for file in list_of_files:
         neighbors = {}
@@ -48,11 +48,9 @@ def generate_topology_from_cdp(list_of_files, *args):
             for match in match_neigh:
                 neighbors[match.group('local_int')] = {match.group('rem_dev'): (match.group('port_id'))}
             result[match_dev.group(1)] = neighbors
-    try:
-        with open(*args, 'w') as f:
+    if type(save_to_filename) == str:
+        with open(save_to_filename, 'w') as f:
             yaml.dump(result, f)
-    except FileNotFoundError:
-        pass
     return result
 
 
