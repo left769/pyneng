@@ -46,12 +46,12 @@ def transform_topology(file):
         for intf in intfs:
             value = list((topology[key])[intf].items())[0]
             result[(key, intf,)] = value
-    test = result.copy()
+    compare = result.copy()
     for link in result:
-        if result[link] in test:
-            del test[link]
-    draw_topology(result, out_filename="img/topology.svg")
-    return test
+        if result[link] in compare:
+            del compare[link]
+    draw_topology(compare, out_filename="img/topology.svg")
+    return compare
 
 
 if __name__ == '__main__':
