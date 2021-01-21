@@ -75,7 +75,7 @@ def send_config_commands(device, config_commands, log=True):
                 if continuation == 'y' or continuation == '':
                     break
                 elif continuation == 'n':
-                    return
+                    return (entered_commands, error_commands)
                 else:
                     print(f"""Not '{continuation}'""")
                 continuation = input('Input y or n: ')
