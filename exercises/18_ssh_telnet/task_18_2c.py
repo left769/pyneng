@@ -76,6 +76,7 @@ def send_config_commands(device, config_commands, log=True):
                 break
         else:
             entered_commands[command] = result
+        ssh.exit_config_mode()
     return (entered_commands, error_commands)
 
 
