@@ -70,6 +70,7 @@ def send_config_commands(device, config_commands, log=True):
         match = re.search(r'% (.+)\n', result)
         if match:
             print(f"""Command "{command}" executed with error "{match.group(1)}" on device {device['host']}""")
+            error_commands[command] = result
             continuation = input('Continue? [y]/n: ')
             while True:
                 if continuation == 'y' or continuation == '':
@@ -77,9 +78,7 @@ def send_config_commands(device, config_commands, log=True):
                 elif continuation == 'n':
                     return (entered_commands, error_commands)
                 else:
-                    print(f"""Not '{continuation}'""")
-                continuation = input('Input y or n: ')
-            error_commands[command] = result
+                    break
         else:
             entered_commands[command] = result
     return (entered_commands, error_commands)
