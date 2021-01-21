@@ -21,7 +21,7 @@ def send_show_command(device, command):
         ssh.enable()
         return ssh.send_command(command)
     except (NetmikoAuthenticationException, paramiko.ssh_exception.AuthenticationException) as error:
-        return error
+        print(error)
 
 
 if __name__ == "__main__":
