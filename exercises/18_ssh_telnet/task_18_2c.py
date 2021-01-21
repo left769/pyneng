@@ -63,19 +63,19 @@ def send_config_commands(device, config_commands, log=True):
     entered_commands = {}
     if log:
         print(f"""Connecting to {device['host']}...""")
-    ssh = ConnectHandler(**device)
-    ssh.enable()
-    for command in config_commands:
-        result = ssh.send_config_set(command, exit_config_mode=False)
-        match = re.search(r'% (.+)\n', result)
-        if match:
-            print(f"""Command "{command}" executed with error "{match.group(1)}" on device {device['host']}""")
-            error_commands[command] = result
-            continuation = input('Continue? [y]/n: ')
-            if continuation.lower() in ('n', 'no'):
-                break
-        else:
-            entered_commands[command] = result
+    with ConnectHandler(**device) as ssh:
+        ssh.enable()
+        for command in config_commands:
+            result = ssh.send_config_set(command, exit_config_mode=False)
+            match = re.search(r'% (.+)\n', result)
+            if match:
+                print(f"""Command "{command}" executed with error "{match.group(1)}" on device {device['host']}""")
+                error_commands[command] = result
+                continuation = input('Continue? [y]/n: ')
+                if continuation.lower() in ('n', 'no'):
+                    break
+            else:
+                entered_commands[command] = result
         ssh.exit_config_mode()
     return (entered_commands, error_commands)
 
