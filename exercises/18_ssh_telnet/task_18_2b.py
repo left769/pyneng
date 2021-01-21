@@ -95,7 +95,6 @@ R1(config)#a
 import yaml
 import re
 from netmiko import ConnectHandler
-from pprint import pprint
 
 commands_with_errors = ["logging 0255.255.1", "logging", "a"]
 correct_commands = ["logging buffered 20010", "ip http server"]
@@ -107,8 +106,7 @@ def send_config_commands(device, config_commands, log=True):
     error_commands = {}
     entered_commands = {}
     if log:
-        logging = 'Connecting to {}...'.format(device['host'])
-        print(logging)
+        print(f"""Connecting to {device['host']}...""")
     ssh = ConnectHandler(**device)
     ssh.enable()
     for command in config_commands:
@@ -126,4 +124,4 @@ if __name__ == '__main__':
     with open('devices.yaml') as f:
         devices = yaml.safe_load(f)
     for dev in devices:
-        pprint(send_config_commands(dev, commands, log=True))
+        print(send_config_commands(dev, commands, log=True))
