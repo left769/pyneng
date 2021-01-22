@@ -31,6 +31,21 @@ In [15]: send_commands(r1, config=['username user5 password pass5', 'username us
 Out[15]: 'config term\nEnter configuration commands, one per line.  End with CNTL/Z.\nR1(config)#username user5 password pass5\nR1(config)#username user6 password pass6\nR1(config)#end\nR1#'
 
 """
+from task_18_1 import send_show_command
+from task_18_2 import send_config_commands
 
 commands = ["logging 10.255.255.1", "logging buffered 20010", "no logging console"]
 command = "sh ip int br"
+
+
+def send_commands(device, show=False, config=False):
+    if show:
+        return send_show_command(device, show)
+    elif config:
+        return send_config_commands(device, config)
+
+
+if __name__ == '__main__':
+    dev = {'device_type': 'cisco_ios', 'host': '192.168.100.1', 'username': 'cisco', 'password': 'cisco',
+           'secret': 'cisco', 'timeout': 5, 'fast_cli': 'true', }
+    print(send_commands(dev, show=command, config=False))
