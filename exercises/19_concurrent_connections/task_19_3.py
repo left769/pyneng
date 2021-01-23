@@ -37,6 +37,9 @@ router ospf 1
 
 Проверить работу функции на устройствах из файла devices.yaml и словаре commands
 """
+import yaml
+from concurrent.futures import ThreadPoolExecutor
+from task_19_2 import send_show_command
 
 # Этот словарь нужен только для проверки работа кода, в нем можно менять IP-адреса
 # тест берет адреса из файла devices.yaml
@@ -45,3 +48,23 @@ commands = {
     "192.168.100.1": "sh ip int br",
     "192.168.100.2": "sh int desc",
 }
+
+
+def send_command_to_devices(devices, commands_dict, filename, limit=3):
+    sorted_commands = []
+    for device in devices:
+        for ip_host in commands_dict.keys():
+            if device['host'] == ip_host:
+                sorted_commands.append(commands_dict[ip_host])
+    with ThreadPoolExecutor(max_workers=limit) as executor:
+        result = executor.map(send_show_command, devices, sorted_commands)
+    file = open(filename, 'w')
+    for element in result:
+        file.write(element)
+    file.close()
+
+
+if __name__ == '__main__':
+    with open('devices.yaml') as f:
+        dev_list = yaml.safe_load(f)
+    send_command_to_devices(dev_list, commands, 'destination.txt')
