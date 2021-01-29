@@ -53,7 +53,7 @@ def send_show_command(device, command):
     ssh.enable()
     prompt = ssh.find_prompt()
     output = ssh.send_command(command)
-    return f'{prompt}{command}\n{output}\n'
+    return f'{prompt}{command}{output}\n'
 
 
 if __name__ == '__main__':
