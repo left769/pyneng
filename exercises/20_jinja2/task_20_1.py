@@ -14,6 +14,14 @@
 
 """
 import yaml
+from jinja2 import Environment, FileSystemLoader
+
+
+def generate_config(template, data_dict):
+    way, filename = (template.split('/'))[0:-1], (template.split('/'))[-1]
+    env = Environment(loader=FileSystemLoader(way))
+    template = env.get_template(filename)
+    return template.render(data_dict)
 
 
 # так должен выглядеть вызов функции
