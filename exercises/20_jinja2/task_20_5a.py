@@ -42,14 +42,15 @@ data = {
 
 
 def configure_vpn(src_device_params, dst_device_params, src_template, dst_template, vpn_data_dict):
+    intf = [send_show_command(src_device_params), send_show_command(dst_device_params)]
+    intf.sort()
+    vpn_data_dict['tun_num'] = intf[-1]+1
     src_data = generate_config(src_template, vpn_data_dict)
     dst_data = generate_config(dst_template, vpn_data_dict)
-    # send_commands(src_device_params, src_data)
-    # send_commands(dst_device_params, dst_data)
-    intf = set(send_show_command(src_device_params) + send_show_command(dst_device_params))
-    return intf
+    result_src = send_commands(src_device_params, src_data)
+    # result_dst = send_commands(dst_device_params, dst_data)
 
-
+    return 'finish'
 
 
 
@@ -58,7 +59,10 @@ def send_show_command(device):
     ssh = ConnectHandler(**device)
     ssh.enable()
     match = re.findall(r'Tunnel(\d+)', ssh.send_command('sh ip int br'))
-    return match
+    if len(match) > 0:
+        return int(match[-1])
+    else:
+        return -1
 
 
 def send_commands(dev_param, commands):
