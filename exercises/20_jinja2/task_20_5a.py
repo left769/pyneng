@@ -26,6 +26,11 @@
 
 Для этого задания нет теста!
 """
+from netmiko import ConnectHandler
+from task_20_1 import generate_config
+import yaml
+import re
+
 
 data = {
     "tun_num": None,
@@ -34,3 +39,35 @@ data = {
     "tun_ip_1": "10.0.1.1 255.255.255.252",
     "tun_ip_2": "10.0.1.2 255.255.255.252",
 }
+
+
+def configure_vpn(src_device_params, dst_device_params, src_template, dst_template, vpn_data_dict):
+    src_data = generate_config(src_template, vpn_data_dict)
+    dst_data = generate_config(dst_template, vpn_data_dict)
+    # send_commands(src_device_params, src_data)
+    # send_commands(dst_device_params, dst_data)
+    intf = set(send_show_command(src_device_params) + send_show_command(dst_device_params))
+    return intf
+
+
+
+
+
+
+def send_show_command(device):
+    ssh = ConnectHandler(**device)
+    ssh.enable()
+    match = re.findall(r'Tunnel(\d+)', ssh.send_command('sh ip int br'))
+    return match
+
+
+def send_commands(dev_param, commands):
+    ssh = ConnectHandler(**dev_param)
+    ssh.enable()
+    ssh.send_config_set(commands)
+
+
+if __name__ == '__main__':
+    with open("devices.yaml") as f:
+        devices = yaml.safe_load(f)
+    print(configure_vpn(devices[0], devices[1], 'templates/gre_ipsec_vpn_1.txt', 'templates/gre_ipsec_vpn_2.txt', data))
