@@ -7,7 +7,12 @@ R4#sh int descInterface                      Status         Protocol Description
 Fa0/0                          up             up       
 Se0/0                          admin down     down     
 Fa0/1                          admin down     down     
+<<<<<<< HEAD
 R2#sh int descInterface                      Status         Protocol Description
+=======
+R2#sh int desc
+Interface                      Status         Protocol Description
+>>>>>>> origin/master
 Fa0/0                          up             up       
 Se0/0                          admin down     down     
 Fa0/1                          admin down     down     
