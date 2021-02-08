@@ -1,0 +1,23 @@
+R4#sh ip int br
+Interface                  IP-Address      OK? Method Status                Protocol
+FastEthernet0/0            192.168.100.94  YES NVRAM  up                    up      
+Serial0/0                  unassigned      YES NVRAM  administratively down down    
+FastEthernet0/1            unassigned      YES NVRAM  administratively down down    
+R4#sh int descInterface                      Status         Protocol Description
+Fa0/0                          up             up       
+Se0/0                          admin down     down     
+Fa0/1                          admin down     down     
+R2#sh int descInterface                      Status         Protocol Description
+Fa0/0                          up             up       
+Se0/0                          admin down     down     
+Fa0/1                          admin down     down     
+R3#sh ip int br
+Interface                  IP-Address      OK? Method Status                Protocol
+FastEthernet0/0            192.168.100.93  YES manual up                    up      
+Serial0/0                  unassigned      YES unset  administratively down down    
+FastEthernet0/1            unassigned      YES unset  administratively down down    
+R3#sh ip route | ex -
+
+Gateway of last resort is not set
+
+C    192.168.100.0/24 is directly connected, FastEthernet0/0
