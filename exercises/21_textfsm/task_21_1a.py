@@ -15,6 +15,7 @@
 Проверить работу функции на выводе команды output/sh_ip_int_br.txt и шаблоне templates/sh_ip_int_br.template.
 """
 import textfsm
+from pprint import pprint
 
 
 def parse_output_to_dict(template, command_output):
@@ -31,4 +32,4 @@ def parse_output_to_dict(template, command_output):
 
 
 if __name__ == "__main__":
-    print(parse_output_to_dict('templates/sh_ip_int_br.template', 'output/sh_ip_int_br.txt'))
+    pprint(parse_output_to_dict('templates/sh_ip_int_br.template', 'output/sh_ip_int_br.txt'))
