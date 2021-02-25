@@ -23,9 +23,9 @@ from textfsm import clitable
 
 def parse_command_dynamic(command_output, attributes_dict, index_file='index', templ_path='templates'):
     cli_table = clitable.CliTable(index_file, templ_path)
-    print(cli_table.ParseCmd(command_output, attributes_dict))
-    print(cli_table.FormattedTable())
-    return cli_table
+    cli_table.ParseCmd(command_output, attributes_dict)
+    result = cli_table.FormattedTable()
+    return result
 
 
 if __name__ == '__man__':
