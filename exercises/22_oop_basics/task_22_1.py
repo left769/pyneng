@@ -29,6 +29,8 @@ Out[3]:
 
 
 """
+from pprint import pprint
+
 
 topology_example = {
     ("R1", "Eth0/0"): ("SW1", "Eth0/1"),
@@ -41,3 +43,18 @@ topology_example = {
     ("SW1", "Eth0/2"): ("R2", "Eth0/0"),
     ("SW1", "Eth0/3"): ("R3", "Eth0/0"),
 }
+
+
+class Topology:
+    def __init__(self, topology_dict):
+        self.topology_dict = topology_dict
+        formatted_topology = {}
+        for local_device, rem_device in topology_dict.items():
+            if rem_device not in formatted_topology.keys():
+                formatted_topology[local_device] = rem_device
+        self.topology = formatted_topology
+
+
+if __name__ == '__main__':
+    top = Topology(topology_example)
+    pprint(top.topology)
