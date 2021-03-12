@@ -74,14 +74,15 @@ class Topology:
 
     def delete_node(self, device_name):
         result = self.topology.copy()
-        for link in self.topology.items():
+        for link in result.items():
             for peer in link:
                 if peer[0] == device_name:
-                    del result[link[0]]
-        if result != self.topology:
+                    del self.topology[link[0]]
+        if result == self.topology:
             print('Такого устройства нет')
 
 
 if __name__ == '__main__':
     top = Topology(topology_example)
-    pprint(top.delete_node('R'))
+    pprint(top.delete_node('R1'))
+    pprint(top.topology)
