@@ -17,6 +17,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\exercises\22_oop_basics\task_22_2a.py">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\exercises\22_oop_basics\useful_scripts.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>

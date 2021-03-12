@@ -43,3 +43,50 @@ Out[5]: 'sh ip int br | exclude unassigned\r\nInterface                  IP-Addr
 
 
 """
+import telnetlib
+import time
+from useful_scripts import parse_command_dynamic
+
+
+class CiscoTelnet:
+    def __init__(self, ip, username, password, secret):
+        self.ip = ip
+        self.username = username
+        self.password = password
+        self. secret = secret
+
+    def _write_line(self, word):
+        return (word + '\n').encode('utf-8')
+
+    def send_show_command(self, show_command, parse=True, index='index', templates='templates'):
+        with telnetlib.Telnet(self.ip) as telnet:
+            telnet.read_until(b"Username")
+            telnet.write(self._write_line(self.username))
+            telnet.read_until(b"Password")
+            telnet.write(self._write_line(self.password))
+            index, m, output = telnet.expect([b">", b"#"])
+            if index == 0:
+                telnet.write(b"enable\n")
+                telnet.read_until(b"Password")
+                telnet.write(self._write_line(self.secret))
+                telnet.read_until(b"#", timeout=5)
+                time.sleep(3)
+                telnet.read_very_eager()
+
+            telnet.write(self._write_line(show_command))
+            out = telnet.read_until(b"#", timeout=5).decode("utf-8")
+        if parse:
+            connection_info = {'Command': show_command, 'Vendor': 'cisco_ios'}
+            return parse_command_dynamic(out, connection_info, 'index', templates)
+        else:
+            return out
+
+
+if __name__ == '__main__':
+    r1_params = {
+        'ip': '192.168.100.1',
+        'username': 'cisco',
+        'password': 'cisco',
+        'secret': 'cisco'}
+    test = CiscoTelnet(**r1_params)
+    print(test.send_show_command('sh ip int br'))
