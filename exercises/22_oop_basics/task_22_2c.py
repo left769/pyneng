@@ -30,7 +30,8 @@ In [6]: commands = commands_with_errors+correct_commands
 Использование метода send_config_commands:
 
 In [7]: print(r1.send_config_commands(commands, strict=False))
-При выполнении команды "logging 0255.255.1" на устройстве 192.168.100.1 возникла ошибка -> Invalid input detected at '^' marker.
+При выполнении команды "logging 0255.255.1" на устройстве 192.168.100.1 возникла ошибка ->
+                                                                                Invalid input detected at '^' marker.
 При выполнении команды "logging" на устройстве 192.168.100.1 возникла ошибка -> Incomplete command.
 При выполнении команды "a" на устройстве 192.168.100.1 возникла ошибка -> Ambiguous command:  "a"
 conf t
@@ -57,7 +58,8 @@ ValueError                                Traceback (most recent call last)
 
 ...
 
-ValueError: При выполнении команды "logging 0255.255.1" на устройстве 192.168.100.1 возникла ошибка -> Invalid input detected at '^' marker.
+ValueError: При выполнении команды "logging 0255.255.1" на устройстве 192.168.100.1 возникла ошибка ->
+                                                                                Invalid input detected at '^' marker.
 
 """
 import telnetlib
@@ -87,28 +89,15 @@ class CiscoTelnet:
     def _write_line(self, word):
         self.telnet.write((word + '\n').encode('utf-8'))
 
-    def send_show_command(self, show_command, parse=True, index='index', templates='templates'):
-        with telnetlib.Telnet(self.ip) as telnet:
-            telnet.read_until(b"Username")
-            telnet.write(self._write_line(self.username))
-            telnet.read_until(b"Password")
-            telnet.write(self._write_line(self.password))
-            index, m, output = telnet.expect([b">", b"#"])
-            if index == 0:
-                telnet.write(b"enable\n")
-                telnet.read_until(b"Password")
-                telnet.write(self._write_line(self.secret))
-                telnet.read_until(b"#", timeout=5)
-                time.sleep(3)
-                telnet.read_very_eager()
-
-            telnet.write(self._write_line(show_command))
-            out = telnet.read_until(b"#", timeout=5).decode("utf-8")
+    def send_show_command(self, show_command, parse=True, templates='templates'):
+        self._write_line(show_command)
+        result = self.telnet.read_until(b"#").decode("utf-8")
+        time.sleep(1)
         if parse:
             connection_info = {'Command': show_command, 'Vendor': 'cisco_ios'}
-            return parse_command_dynamic(out, connection_info, 'index', templates)
+            return parse_command_dynamic(result, connection_info, 'index', templates)
         else:
-            return out
+            return result
 
     def send_config_commands(self, config_command, strict=True):
         result = ''
@@ -124,7 +113,7 @@ class CiscoTelnet:
             if error_check and strict:
                 raise ValueError(f'При выполнении команды "{command}" на устройстве {self.ip} '
                                  f'возникла ошибка -> {error_check.group(1)}')
-            elif error_check and strict == False:
+            elif error_check and not strict:
                 print(f'При выполнении команды "{command}" на устройстве {self.ip} '
                       f'возникла ошибка -> {error_check.group(1)}')
             result = result + out
@@ -146,4 +135,4 @@ if __name__ == '__main__':
         'password': 'cisco',
         'secret': 'cisco'}
     test = CiscoTelnet(**r1_params)
-    print(test.send_config_commands(commands, strict=False))
+    print(test.send_show_command('sh ip int br'))
