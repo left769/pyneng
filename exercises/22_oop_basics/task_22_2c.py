@@ -62,7 +62,7 @@ ValueError: При выполнении команды "logging 0255.255.1" на
 """
 import telnetlib
 import time
-from useful_scripts import parse_command_dynamic
+# from useful_scripts import parse_command_dynamic
 
 
 class CiscoTelnet:
@@ -71,17 +71,6 @@ class CiscoTelnet:
         self.username = username
         self.password = password
         self.secret = secret
-        self.telnet = telnetlib.Telnet(ip)
-        self.telnet.read_until(b"Username:")
-        self._write_line(username)
-        self.telnet.read_until(b"Password:")
-        self._write_line(password)
-        self._write_line("enable")
-        self.telnet.read_until(b"Password:")
-        self._write_line(secret)
-        self._write_line("terminal length 0")
-        time.sleep(1)
-        self.telnet.read_very_eager()
 
     def _write_line(self, word):
         return (word + '\n').encode('utf-8')
@@ -109,20 +98,31 @@ class CiscoTelnet:
         else:
             return out
 
+
+
     def send_config_commands(self, config_command, strict=True):
         result = ''
-        error_flow = ''
         if type(config_command) == str:
             config_command = [config_command]
-        self._write_line("conf t")
-
-        for command in config_command:
-            self._write_line(command)
+        with telnetlib.Telnet(self.ip) as telnet:
+            telnet.read_until(b"Username")
+            telnet.write(self._write_line(self.username))
+            telnet.read_until(b"Password")
+            telnet.write(self._write_line(self.password))
             time.sleep(1)
-            out = self.telnet.read_very_eager().decode('utf-8')
+            telnet.write(b"enable\n")
+            telnet.read_until(b"Password")
+            telnet.write(self._write_line(self.secret))
+            time.sleep(1)
+            telnet.write(self._write_line('conf t'))
+            for command in config_command:
+                telnet.write(self._write_line(command))
+                time.sleep(1)
+            out = telnet.read_very_eager().decode("utf-8")
             result = result + out
-            self._write_line('end')
-            result = result + self.telnet.read_very_eager().decode('utf-8')
+
+
+
         return result
 
 
@@ -132,6 +132,7 @@ if __name__ == '__main__':
     commands_with_errors = ['logging 0255.255.1', 'logging', 'a']
     correct_commands = ['logging buffered 20010', 'ip http server']
     commands = commands_with_errors + correct_commands
+    print(commands)
     r1_params = {
         'ip': '192.168.100.1',
         'username': 'cisco',

@@ -39,7 +39,7 @@ class CiscoTelnet:
         self.ip = ip
         self.username = username
         self.password = password
-        self. secret = secret
+        self.secret = secret
 
     def _write_line(self, word):
         return (word + '\n').encode('utf-8')
