@@ -29,6 +29,6 @@ device_params = {
 
 
 class CiscoSSH(BaseSSH):
-    def __init__(self, ip, username, password, enable_password):
-        super.__init__(ip, username, password, enable_password)
+    def __init__(self, **device_params):
+        super().__init__(**device_params)
         self.ssh.enable()
