@@ -45,6 +45,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\exercises\23_oop_special_methods\task_23_3.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
