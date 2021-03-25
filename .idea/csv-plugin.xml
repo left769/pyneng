@@ -59,6 +59,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\exercises\25_db\task_25_1\create_db.py">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
