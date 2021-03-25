@@ -52,6 +52,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\exercises\24_oop_inheritance\task_24_2b.py">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
