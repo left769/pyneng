@@ -6,7 +6,8 @@
 Скопировать класс MyNetmiko из задания 24.2c или задания 24.2b.
 
 Добавить параметр ignore_errors в метод send_config_set.
-Если передано истинное значение, не надо выполнять проверку на ошибки и метод должен работать точно так же как метод send_config_set в netmiko.
+Если передано истинное значение, не надо выполнять проверку на ошибки и метод должен работать точно так же как метод
+                                                                                            send_config_set в netmiko.
 Если значение ложное, ошибки должны проверяться.
 
 По умолчанию ошибки должны игнорироваться.
@@ -17,10 +18,12 @@ In [2]: from task_24_2d import MyNetmiko
 In [3]: r1 = MyNetmiko(**device_params)
 
 In [6]: r1.send_config_set('lo')
-Out[6]: 'config term\nEnter configuration commands, one per line.  End with CNTL/Z.\nR1(config)#lo\n% Incomplete command.\n\nR1(config)#end\nR1#'
+Out[6]: 'config term\nEnter configuration commands, one per line.  End with CNTL/Z.\n
+                                                            R1(config)#lo\n% Incomplete command.\n\nR1(config)#end\nR1#'
 
 In [7]: r1.send_config_set('lo', ignore_errors=True)
-Out[7]: 'config term\nEnter configuration commands, one per line.  End with CNTL/Z.\nR1(config)#lo\n% Incomplete command.\n\nR1(config)#end\nR1#'
+Out[7]: 'config term\nEnter configuration commands, one per line.  End with CNTL/Z.\n
+                                                            R1(config)#lo\n% Incomplete command.\n\nR1(config)#end\nR1#'
 
 In [8]: r1.send_config_set('lo', ignore_errors=False)
 ---------------------------------------------------------------------------
@@ -34,7 +37,7 @@ ErrorInCommand: При выполнении команды "lo" на устро�
 from netmiko.cisco.cisco_ios import CiscoIosSSH
 import re
 
-device_params = {
+r1_params = {
     "device_type": "cisco_ios",
     "ip": "192.168.100.1",
     "username": "cisco",
@@ -64,20 +67,20 @@ class MyNetmiko(CiscoIosSSH):
         self._check_error_in_command(command_string, result)
         return result
 
-    def send_config_set(self, commands_list, ignore_errors=True):
+    def send_config_set(self, config_commands=None, ignore_errors=True, *args, **kwargs):
         result = ''
         if ignore_errors:
-            return super(MyNetmiko, self).send_config_set(commands_list)
+            return super(MyNetmiko, self).send_config_set(config_commands, *args, **kwargs)
         else:
-            if isinstance(commands_list, str):
-                commands_list = [commands_list]
-            for command in commands_list:
-                result += super().send_config_set(command, exit_config_mode=False)
+            if isinstance(config_commands, str):
+                config_commands = [config_commands]
+            for command in config_commands:
+                result += super().send_config_set(command, exit_config_mode=False, *args, **kwargs)
                 self._check_error_in_command(command, result)
             result += super().send_config_set('end')
             return result
 
 
 if __name__ == '__main__':
-    r1 = MyNetmiko(**device_params)
+    r1 = MyNetmiko(**r1_params)
     print(r1.send_config_set('int loopback 0', ignore_errors=False))
