@@ -4,6 +4,7 @@ import yaml
 import os
 import re
 
+
 def update_db(sw_src_file, dhcp_src_file, db_name):
     if not os.path.exists(db_name):
         print('База данных не существует. Перед добавлением данных, ее надо создать')
@@ -39,8 +40,6 @@ def update_dhcp_table(src_file, connection):
         except sqlite3.IntegrityError as error:
             print(f'При добавлении данных: {list_to_append} Возникла ошибка: {error}')
     connection.commit()
-
-
 
 
 if __name__ == '__main__':
