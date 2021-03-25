@@ -52,8 +52,8 @@ class MyNetmiko(CiscoIosSSH):
         if error_check:
             raise ErrorInCommand(f"При выполнении команды '{command}' возникла ошибка '{error_check.group(1)}'{out}")
 
-    def send_command(self, command_string):
-        result = super().send_command(command_string)
+    def send_command(self, command_string, *args, **kwargs):
+        result = super().send_command(command_string, *args, **kwargs)
         self._check_error_in_command(command_string, result)
         return result
 
@@ -70,4 +70,4 @@ class MyNetmiko(CiscoIosSSH):
 
 if __name__ == '__main__':
     r1 = MyNetmiko(**device_params)
-    print(r1.send_config_set(['int loopback 0', 'ip addr 5.5.5.5 255.255.255.255']))
+    print(r1.send_command('sh ip int br', strip_command=False))
