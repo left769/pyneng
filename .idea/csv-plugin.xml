@@ -101,6 +101,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\exercises\25_db\task_25_6\parse_dhcp_snooping.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\exercises\25_db\task_25_6\parse_dhcp_snooping_functions.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
