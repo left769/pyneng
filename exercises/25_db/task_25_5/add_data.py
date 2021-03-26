@@ -3,6 +3,9 @@ import sqlite3
 import yaml
 import os
 import re
+from datetime import timedelta, datetime
+
+
 
 
 def update_db(db_name, sw_src_file=None, dhcp_src_file=None):
@@ -11,10 +14,17 @@ def update_db(db_name, sw_src_file=None, dhcp_src_file=None):
         return None
     else:
         connection = sqlite3.connect(db_name)
+        del_old_lines(connection)
         if sw_src_file:
             update_switches_table(sw_src_file, connection)
         if dhcp_src_file:
             update_dhcp_table(dhcp_src_file, connection)
+
+
+def del_old_lines(connection):
+    now = datetime.today().replace(microsecond=0)
+    week_ago = now - timedelta(days=7)
+    connection.execute(f"DELETE FROM dhcp WHERE last_active < '{week_ago}'")
 
 
 def update_switches_table(src_file, connection):
@@ -53,4 +63,4 @@ def update_dhcp_table(src_file, connection):
 
 
 if __name__ == '__main__':
-    update_db('dhcp_snooping.db', dhcp_src_file='new_data/sw1_dhcp_snooping.txt')
+    update_db('dhcp_snooping.db', dhcp_src_file='new_data/sw2_dhcp_snooping.txt')
