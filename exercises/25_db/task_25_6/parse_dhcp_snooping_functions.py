@@ -32,7 +32,6 @@ def add_data(db_file, files):
         update_dhcp_table(file, connection)
 
 
-
 def get_data(db_file, key, value):
     result = list(get_active_lines_info(db_file, key, value))
     decorator(result, 1)
