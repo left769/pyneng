@@ -6,8 +6,6 @@ import re
 from datetime import timedelta, datetime
 
 
-
-
 def update_db(db_name, sw_src_file=None, dhcp_src_file=None):
     if not os.path.exists(db_name):
         print('База данных не существует. Перед добавлением данных, ее надо создать')
