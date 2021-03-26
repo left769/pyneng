@@ -73,6 +73,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\exercises\25_db\task_25_3\add_data.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
